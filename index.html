@@ -9,7 +9,7 @@
         body {
             font-family: sans-serif;
             font-size: 14px;
-            background-color: silver
+            background-image: linear-gradient(pink, hotpink)
         }
         
         text {
@@ -17,30 +17,39 @@
             font-size: 10px;
         }
         
-        svg {
-            max-height: 99vh
+        .wrapr {
+            position: relative;
+            height: 100vh;
+            width: 222px;
+        }
+        
+        .wrapr>svg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%
         }
     </style>
 </head>
 
 <body>
-    <svg preserveAspectRatio="xMidYMid" viewBox="0 0 64 161">
-        <polygon id=blu fill="#A8E5E7" points="3 140,61 140,61 151,3 151" />
-        <path fill="none" stroke="#FAFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M52.25,2 L50,2 L50,17.6855 C50,25.15475 54.413,25.15475 54.413,25.15475 C58.60325,25.15475 62,28.53725 62,32.7095 L62,144.4445 C62,148.6175 58.60325,152 54.413,152 L9.587,152 C5.39675,152 2,148.6175 2,144.4445 L2,32.7095 C2,28.53725 5.39675,25.15475 9.587,25.15475 C9.587,25.15475 14,25.15475 14,17.6855 L14,2 L11.75,2"></path>
-        <g>
-            <path stroke="#888" stroke-width="2" d="M0 140.0h70"></path>
-            <text id=txt x="65" y="143">10%</text>
-        </g>
-    </svg>
+    <div class="wrapr">
+        <svg id="top" viewBox="0 0 67 151" preserveAspectRatio="xMidYMax">
+            <path fill="none" stroke="#FAFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M52.25,2 L50,2 L50,17.6855 C50,25.15475 54.413,25.15475 54.413,25.15475 C58.60325,25.15475 62,28.53725 62,32.7095 L62,144.4445 C62,148.6175 58.60325,152 54.413,152 L9.587,152 C5.39675,152 2,148.6175 2,144.4445 L2,32.7095 C2,28.53725 5.39675,25.15475 9.587,25.15475 C9.587,25.15475 14,25.15475 14,17.6855 L14,2 L11.75,2"></path>
+        </svg>
+        <svg id="bot" viewBox="0 0 67 151" preserveAspectRatio="xMidYMax slice" height="55">
+            <path fill="#A8E5E7" stroke="#FAFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M52.25,2 L50,2 L50,17.6855 C50,25.15475 54.413,25.15475 54.413,25.15475 C58.60325,25.15475 62,28.53725 62,32.7095 L62,144.4445 C62,148.6175 58.60325,152 54.413,152 L9.587,152 C5.39675,152 2,148.6175 2,144.4445 L2,32.7095 C2,28.53725 5.39675,25.15475 9.587,25.15475 C9.587,25.15475 14,25.15475 14,17.6855 L14,2 L11.75,2"></path>
+        </svg>
+    </div>
+
     <script src="d3-dispatch.v1.min.js"></script>
     <script src="d3-selection.v1.min.js"></script>
     <script src="d3-drag.v1.min.js"></script>
     <script>
         var drag = d3.drag().on('drag', function () {
-            if (d3.event.y < 25 || d3.event.y > 150) { return; }
-            d3.select(this).attr('style', function () {
-                var dey = d3.event.y - 140;
-                return "transform:translateY(" + dey + "px)";
+            d3.select(this).attr('height', function () {
+                var dey = Math.abs(700 - d3.event.y);
+                return dey + 'px';
             });
             pth.attr('points', function () {
                 var p = d3.event.y;
@@ -52,7 +61,7 @@
             });
         })
 
-        var g = d3.select('g').call(drag);
+        var top = d3.select('#bot').call(drag);
         var pth = d3.select('#blu');
         var txt = d3.select('#txt');
     </script>
