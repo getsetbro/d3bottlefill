@@ -8,11 +8,11 @@
     <style>
         body {
             background-image: linear-gradient(pink, hotpink);
-            margin: 0;
+            margin: 88px 0 0;
         }
         html,body{height: 100%}
         svg {
-            height: 90%;
+            height: 70%;
             width: 100vw;
         }
 
@@ -32,12 +32,16 @@
 
     <script>
         var drag = d3.drag().on('drag', function () {
-          var coord = d3.mouse(this);
-          var n = (coord[1] < 0) ? 0 : coord[1];
+          //get event position
+          var y = d3.event.y;
+          //no negatives
+          var n = (y < 0) ? 0 : y;
+          //create percentage of SVG
+          var p = n / d3.select(this).node().getBoundingClientRect().height;
           d3.select('#clipRect')
           //.attr('height', function () {return 100 - coord[1] + 'px';})
-          .attr('y', function () {return n + 'px';});
-        })
+          .attr('y', function () {return p * 100 + '%';});
+        });
 
         var top = d3.select('svg').call(drag);
     </script>
